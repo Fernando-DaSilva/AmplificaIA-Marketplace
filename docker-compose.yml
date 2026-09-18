@@ -10,11 +10,8 @@ services:
       - ENVIRONMENT=production
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.amplifica-marketplace.rule=Host(`marketplace.srv1767287.hstgr.cloud`) || Host(`srv1767287.hstgr.cloud`) || Host(`marketplace.amplifica.ai`)"
-      - "traefik.http.routers.amplifica-marketplace.entrypoints=web"
-      - "traefik.http.services.amplifica-marketplace.loadbalancer.server.port=8050"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8050/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      - "traefik.http.routers.amplificaia-marketplace.rule=Host(`marketplace.srv1767287.hstgr.cloud`) || Host(`amplificaia-marketplace.srv1767287.hstgr.cloud`) || Host(`srv1767287.hstgr.cloud`)"
+      - "traefik.http.routers.amplificaia-marketplace.entrypoints=websecure"
+      - "traefik.http.routers.amplificaia-marketplace.tls.certresolver=letsencrypt"
+      - "traefik.http.services.amplificaia-marketplace.loadbalancer.server.port=8050"
+
