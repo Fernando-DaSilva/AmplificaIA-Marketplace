@@ -8,6 +8,11 @@ services:
     environment:
       - PORT=8050
       - ENVIRONMENT=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.amplifica-marketplace.rule=Host(`marketplace.srv1767287.hstgr.cloud`) || Host(`srv1767287.hstgr.cloud`) || Host(`marketplace.amplifica.ai`)"
+      - "traefik.http.routers.amplifica-marketplace.entrypoints=web"
+      - "traefik.http.services.amplifica-marketplace.loadbalancer.server.port=8050"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8050/"]
       interval: 30s
