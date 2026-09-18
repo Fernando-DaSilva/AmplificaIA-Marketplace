@@ -1,0 +1,13 @@
+{
+  "agent_id": "agente-dentista-anamnese-v3",
+  "name": "Agente AI Odontológico - Triagem & Lembrete Pós-Procedimento",
+  "description": "Agente autônomo para clínicas dentárias que realiza atendimento inicial no WhatsApp, qualifica queixas (dor de dente, limpeza, ortodontia), envia orientações pré-consulta e realiza follow-up pós-procedimento.",
+  "workflow_engine": "LangChain / Flowise / n8n compatible",
+  "nodes": [
+    {"id": "1", "type": "webhook", "name": "Mensagem Recebida WhatsApp"},
+    {"id": "2", "type": "ai_classifier", "name": "Classificar Urgência (Dor / Estética / Manutenção)"},
+    {"id": "3", "type": "calendar_connector", "name": "Verificar Encaixes no DentalOffice / Simples Dental"},
+    {"id": "4", "type": "post_procedure_timer", "name": "Agendar Lembrete de Analgésico 12h após Cirurgia"}
+  ],
+  "integrations": ["DentalOffice API", "Z-API WhatsApp", "Google Calendar"]
+}

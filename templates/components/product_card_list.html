@@ -1,0 +1,13 @@
+{% if not products %}
+    <div class="col-span-full py-16 text-center space-y-3 bg-slate-900/60 rounded-3xl border border-slate-800">
+        <div class="w-16 h-16 rounded-2xl bg-slate-800 text-indigo-400 flex items-center justify-center text-2xl mx-auto border border-slate-700">
+            <i class="fa-solid fa-magnifying-glass font-light"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Nenhum recurso de IA encontrado</h3>
+        <p class="text-xs text-slate-400 max-w-sm mx-auto">Tente alterar o filtro de categoria de negócio ou remover o termo da busca.</p>
+    </div>
+{% else %}
+    {% for product in products %}
+        {% include 'components/product_card.html' %}
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,55 @@
+<div class="space-y-6 mb-8">
+    <!-- Header dos Filtros -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
+        <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-sliders text-indigo-400"></i> Catálogo de Recursos de IA
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Filtre por nicho de atuação ou formato do recurso digital.</p>
+        </div>
+
+        <!-- Filter Tabs por Tipo de Recurso (Prompt, Skill, MCP, Agente AI, API) -->
+        <div class="flex flex-wrap gap-1.5 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800">
+            <button 
+                type="button" 
+                hx-get="/products?ptype=all" 
+                hx-target="#product-grid" 
+                hx-include="[name='search'], [name='category']"
+                class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all {% if not current_ptype or current_ptype == 'all' %}bg-indigo-600 text-white shadow{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}"
+            >
+                Todos os Tipos
+            </button>
+            {% for ptype_key, ptype_val in product_types.items() %}
+                <button 
+                    type="button" 
+                    hx-get="/products?ptype={{ ptype_key }}" 
+                    hx-target="#product-grid" 
+                    hx-include="[name='search'], [name='category']"
+                    class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 {% if current_ptype == ptype_key %}bg-indigo-600 text-white shadow{% else %}text-slate-400 hover:text-white hover:bg-slate-800{% endif %}"
+                >
+                    <i class="fa-solid {{ ptype_val.icon }} text-[11px]"></i>
+                    <span>{{ ptype_val.label }}</span>
+                </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Category Pills Por Nicho de Negócio (Advogados, Barbearias, Contadores, Dentistas, etc.) -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1 shrink-0 mr-2">
+            <i class="fa-solid fa-building text-indigo-400"></i> Nichos:
+        </span>
+        {% for cat in categories %}
+            <button 
+                type="button" 
+                hx-get="/products?category={{ cat.id }}" 
+                hx-target="#product-grid" 
+                hx-include="[name='search'], [name='ptype']"
+                class="shrink-0 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all border shadow-sm {% if (not current_category and cat.id == 'all') or (current_category == cat.id) %}bg-slate-800 text-white border-indigo-500/60 shadow-indigo-500/10 ring-1 ring-indigo-500/30{% else %}bg-slate-900/60 text-slate-300 border-slate-800/80 hover:bg-slate-800 hover:border-slate-700{% endif %}"
+            >
+                <i class="fa-solid {{ cat.icon }} text-indigo-400"></i>
+                <span>{{ cat.name }}</span>
+            </button>
+        {% endfor %}
+    </div>
+</div>

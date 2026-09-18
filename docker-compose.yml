@@ -1,0 +1,15 @@
+services:
+  amplifica-marketplace:
+    build: .
+    container_name: amplifica-marketplace-prototype
+    restart: always
+    ports:
+      - "8050:8050"
+    environment:
+      - PORT=8050
+      - ENVIRONMENT=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8050/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

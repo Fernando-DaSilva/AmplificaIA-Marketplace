@@ -1,0 +1,19 @@
+{
+  "agent_id": "agente-sdr-vendas-v2",
+  "name": "Agente SDR AI - Qualificação & Agendamento de Reuniões",
+  "description": "Agente autônomo de pré-vendas (SDR) para abordagem, qualificação BANT e agendamento automático na agenda dos closers.",
+  "qualification_rules": {
+    "framework": "BANT",
+    "budget_min": 2000,
+    "authority_check": true,
+    "timeline_max_days": 30
+  },
+  "workflow_steps": [
+    "1. Boas-vindas e apresentação humanizada",
+    "2. Identificação da necessidade e segmento da empresa do lead",
+    "3. Qualificação de orçamento e prazo de contratação",
+    "4. Apresentação dos horários disponíveis na agenda do vendedor (Round-Robin)",
+    "5. Confirmação do compromisso e criação do card no CRM (Pipedrive/HubSpot)"
+  ],
+  "integrations": ["Calendly", "HubSpot", "Pipedrive", "Z-API WhatsApp", "Slack Webhook"]
+}

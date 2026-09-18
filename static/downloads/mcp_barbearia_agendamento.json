@@ -1,0 +1,37 @@
+{
+  "mcpVersion": "1.0",
+  "name": "mcp-barbearia-whatsapp-agendamentos",
+  "description": "Servidor MCP para integração entre Agentes de IA e sistemas de agendamento de Barbearias & Salões via WhatsApp",
+  "tools": [
+    {
+      "name": "verificar_horarios_disponiveis",
+      "description": "Consulta a agenda do profissional para a data especificada",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "barbeiro_id": {"type": "string"},
+          "data": {"type": "string", "format": "date"}
+        },
+        "required": ["data"]
+      }
+    },
+    {
+      "name": "confirmar_agendamento",
+      "description": "Reserva o horário do cliente e envia notificação via WhatsApp",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "cliente_nome": {"type": "string"},
+          "cliente_telefone": {"type": "string"},
+          "servico": {"type": "string", "enum": ["Corte", "Barba", "Corte + Barba", "Selagem", "Coloração"]},
+          "horario_inicio": {"type": "string"}
+        },
+        "required": ["cliente_nome", "cliente_telefone", "servico", "horario_inicio"]
+      }
+    }
+  ],
+  "env_vars_required": [
+    "WHATSAPP_API_TOKEN",
+    "AGENDA_WEBHOOK_URL"
+  ]
+}

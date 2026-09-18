@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+
+    <!-- Success Celebration Card -->
+    <div class="bg-[#0d1424] border border-emerald-500/40 rounded-3xl p-8 text-center space-y-4 shadow-2xl relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="w-20 h-20 bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 rounded-3xl flex items-center justify-center text-3xl mx-auto shadow-lg shadow-emerald-500/30">
+            <i class="fa-solid fa-check-double"></i>
+        </div>
+
+        <div class="space-y-1">
+            <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-wider">
+                Pagamento Confirmado • Pedido {{ order.order_id }}
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight pt-2">
+                Parabéns! Seus Ativos de IA estão Prontos para Download.
+            </h1>
+            <p class="text-sm text-slate-300 max-w-xl mx-auto">
+                Enviamos uma cópia do comprovante e dos arquivos para <strong class="text-white">{{ order.customer.email }}</strong>.
+            </p>
+        </div>
+    </div>
+
+    <!-- AREA DE DOWNLOAD DOS ARQUIVOS COMPRADOS -->
+    <div class="bg-[#0d1424] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div>
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-down text-indigo-400"></i> Arquivos Disponíveis para Download
+                </h3>
+                <p class="text-xs text-slate-400">Clique nos botões abaixo para baixar o código-fonte, prompts e arquivos MCP.</p>
+            </div>
+            <span class="text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-3 py-1 rounded-lg font-semibold">
+                {{ order.purchased_files | length }} arquivo(s) liberado(s)
+            </span>
+        </div>
+
+        <div class="space-y-3">
+            {% for file in order.purchased_files %}
+                <div class="bg-slate-900/90 border border-slate-800/90 hover:border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-indigo-600/30 to-purple-600/30 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-file-code"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                                    {{ file.product_type }}
+                                </span>
+                                <span class="text-xs text-slate-400 truncate max-w-xs">{{ file.product_title }}</span>
+                            </div>
+                            <h4 class="text-sm font-bold text-white mt-1">{{ file.file_name }}</h4>
+                            <span class="text-[11px] text-slate-400">{{ file.file_type }} • {{ file.file_size }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Botão de Download Direto -->
+                    <a 
+                        href="{{ file.download_url }}" 
+                        download
+                        class="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all shrink-0"
+                    >
+                        <i class="fa-solid fa-download"></i>
+                        <span>Baixar {{ file.file_name }}</span>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Order Summary Details -->
+    <div class="bg-[#0d1424] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 pb-2 border-b border-slate-800">
+            Detalhes do Pedido
+        </h3>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+            <div>
+                <span class="text-slate-400 block mb-0.5">Comprador</span>
+                <strong class="text-white">{{ order.customer.name }}</strong>
+            </div>
+            <div>
+                <span class="text-slate-400 block mb-0.5">Forma de Pagamento</span>
+                <strong class="text-emerald-400 uppercase font-bold">{{ order.payment_method }}</strong>
+            </div>
+            <div>
+                <span class="text-slate-400 block mb-0.5">Data da Compra</span>
+                <strong class="text-white">{{ order.created_at }}</strong>
+            </div>
+            <div>
+                <span class="text-slate-400 block mb-0.5">Valor Pago</span>
+                <strong class="text-indigo-400 font-extrabold text-sm">R$ {{ "%.2f"|format(order.total) }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center pt-4">
+        <a href="/?tenant={{ tenant.id }}" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs px-6 py-3.5 rounded-xl border border-slate-700 transition-colors">
+            <i class="fa-solid fa-house"></i>
+            <span>Voltar ao Catálogo de Produtos</span>
+        </a>
+    </div>
+
+</div>
+{% endblock %}

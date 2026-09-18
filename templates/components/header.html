@@ -1,0 +1,91 @@
+<header class="sticky top-0 z-40 bg-[#090d16]/90 backdrop-blur-md border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+        
+        <!-- Logo & White-label Badge -->
+        <div class="flex items-center gap-4">
+            <a href="/?tenant={{ tenant.id }}" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+                    {{ tenant.logo_text[0] }}
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-xl text-white tracking-tight leading-none group-hover:text-indigo-400 transition-colors">
+                        {{ tenant.name }}
+                    </span>
+                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 mt-1 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> White-label Store
+                    </span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Live HTMX Search Bar -->
+        <div class="hidden md:flex flex-1 max-w-md mx-4 relative">
+            <div class="relative w-full">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Buscar Prompts, Skills, MCP, Agentes AI..." 
+                    class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                    hx-get="/products" 
+                    hx-target="#product-grid" 
+                    hx-trigger="keyup changed delay:300ms, search" 
+                    hx-include="[name='category'], [name='ptype']"
+                >
+            </div>
+        </div>
+
+        <!-- Actions & Cart Drawer Trigger -->
+        <div class="flex items-center gap-3">
+            
+            <!-- Tenant Selector Quick Switcher -->
+            <div class="relative hidden sm:block">
+                <button @click="tenantDropdown = !tenantDropdown" x-data="{ tenantDropdown: false }" class="flex items-center gap-2 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 font-medium transition-all">
+                    <i class="fa-solid fa-palette text-indigo-400"></i>
+                    <span>Marca: <strong class="text-white">{{ tenant.logo_text }}</strong></span>
+                    <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+
+                    <div x-show="tenantDropdown" @click.away="tenantDropdown = false" class="absolute right-0 top-full mt-2 w-56 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl py-2 z-50 text-left">
+                        <div class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                            Selecionar Marca White-Label
+                        </div>
+                        <a href="/?tenant=amplifica_ia" class="block px-3 py-2 text-xs text-slate-300 hover:bg-indigo-600/20 hover:text-white flex items-center justify-between">
+                            <span>AmplificaIA Oficial</span>
+                            {% if tenant.id == 'amplifica_ia' %}<i class="fa-solid fa-check text-indigo-400"></i>{% endif %}
+                        </a>
+                        <a href="/?tenant=lawtech_ai" class="block px-3 py-2 text-xs text-slate-300 hover:bg-amber-600/20 hover:text-white flex items-center justify-between">
+                            <span>LegalTech AI (Jurídico)</span>
+                            {% if tenant.id == 'lawtech_ai' %}<i class="fa-solid fa-check text-amber-400"></i>{% endif %}
+                        </a>
+                        <a href="/?tenant=beauty_hub" class="block px-3 py-2 text-xs text-slate-300 hover:bg-pink-600/20 hover:text-white flex items-center justify-between">
+                            <span>BeautyAI Store (Salões)</span>
+                            {% if tenant.id == 'beauty_hub' %}<i class="fa-solid fa-check text-pink-400"></i>{% endif %}
+                        </a>
+                        <a href="/?tenant=accountant_ia" class="block px-3 py-2 text-xs text-slate-300 hover:bg-emerald-600/20 hover:text-white flex items-center justify-between">
+                            <span>ContábilIA (Contadores)</span>
+                            {% if tenant.id == 'accountant_ia' %}<i class="fa-solid fa-check text-emerald-400"></i>{% endif %}
+                        </a>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Shopping Cart Button -->
+            <button 
+                @click="cartOpen = true" 
+                hx-get="/cart" 
+                hx-target="#cart-drawer-container"
+                class="relative bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-lg shadow-indigo-600/25 flex items-center gap-2.5 transition-all transform active:scale-95"
+            >
+                <i class="fa-solid fa-bag-shopping text-base"></i>
+                <span class="hidden sm:inline">Carrinho</span>
+                <span 
+                    id="cart-count-badge" 
+                    class="bg-white text-indigo-900 font-extrabold text-xs w-5 h-5 rounded-full flex items-center justify-center shadow"
+                >
+                    {{ cart.item_count }}
+                </span>
+            </button>
+        </div>
+
+    </div>
+</header>

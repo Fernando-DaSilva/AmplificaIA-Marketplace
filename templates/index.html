@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="space-y-12 pb-16">
+
+    <!-- Hero Banner White-label -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-[#0f172a]/80 via-[#0d1424] to-[#090d16] border-b border-slate-800/80 pt-12 pb-16">
+        <!-- Background Glowing Orbs -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-indigo-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="absolute top-10 right-10 w-[300px] h-[300px] bg-purple-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
+            
+            <!-- White-label Pill Tag -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-semibold backdrop-blur-md">
+                <i class="fa-solid fa-sparkles text-indigo-400"></i>
+                <span>Prototipo Marketplace White-Label • Soluções de IA para Negócios</span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight max-w-4xl mx-auto leading-tight">
+                {{ tenant.banner_title }}
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                {{ tenant.banner_subtitle }}
+            </p>
+
+            <!-- Quick Metrics / USPs -->
+            <div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center backdrop-blur-sm">
+                    <span class="block text-2xl font-extrabold text-white">100%</span>
+                    <span class="text-xs text-slate-400">White-Label Customizável</span>
+                </div>
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center backdrop-blur-sm">
+                    <span class="block text-2xl font-extrabold text-indigo-400">5 Tipos</span>
+                    <span class="text-xs text-slate-400">Prompts, Skills, MCP, Agentes & APIs</span>
+                </div>
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center backdrop-blur-sm">
+                    <span class="block text-2xl font-extrabold text-purple-400">8+ Nichos</span>
+                    <span class="text-xs text-slate-400">Advogados, Salões, Contadores, etc.</span>
+                </div>
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 text-center backdrop-blur-sm">
+                    <span class="block text-2xl font-extrabold text-emerald-400">Instantâneo</span>
+                    <span class="text-xs text-slate-400">Download dos Arquivos Pós-Compra</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Catalog & Filters Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Filter Bar Component -->
+        {% include 'components/filter_bar.html' %}
+
+        <!-- Product Grid (Actualizado via HTMX sem reload) -->
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for product in products %}
+                {% include 'components/product_card.html' %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,144 @@
+<div x-data="{ modalOpen: true }" x-show="modalOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: block;">
+    <!-- Backdrop -->
+    <div @click="modalOpen = false" class="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"></div>
+
+    <!-- Modal Content -->
+    <div class="relative min-h-screen flex items-center justify-center p-4 sm:p-6">
+        <div class="relative bg-[#0d1424] border border-slate-700/80 rounded-3xl max-w-3xl w-full shadow-2xl overflow-hidden text-slate-100 my-8">
+            
+            <!-- Close Button -->
+            <button @click="modalOpen = false" class="absolute top-4 right-4 z-10 bg-black/60 hover:bg-black/90 text-white w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-md transition-colors border border-white/10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Banner / Header Image -->
+            <div class="relative h-64 sm:h-72 overflow-hidden bg-slate-900">
+                <img src="{{ product.image_url }}" alt="{{ product.title }}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0d1424] via-[#0d1424]/40 to-transparent"></div>
+
+                <!-- Badges -->
+                <div class="absolute top-4 left-4 flex flex-wrap gap-2">
+                    {% set ptype_info = product_types.get(product.type, {}) %}
+                    <span class="px-3 py-1 rounded-lg text-xs font-bold border shadow-lg {{ ptype_info.color or 'bg-slate-800 text-white' }}">
+                        <i class="fa-solid {{ ptype_info.icon or 'fa-cube' }} mr-1"></i>
+                        {{ product.type }}
+                    </span>
+                    <span class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-900/90 text-slate-200 border border-slate-700 backdrop-blur-md">
+                        {{ product.category }}
+                    </span>
+                </div>
+
+                <div class="absolute bottom-4 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                            {{ product.title }}
+                        </h2>
+                        <div class="flex items-center gap-3 mt-2 text-xs text-slate-300">
+                            <span class="flex items-center text-amber-400 font-bold">
+                                <i class="fa-solid fa-star mr-1"></i> {{ product.rating }}
+                            </span>
+                            <span>•</span>
+                            <span>{{ product.sales_count }} downloads realizados</span>
+                            <span>•</span>
+                            <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i> Verificado por {{ tenant.name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 sm:p-8 space-y-6 max-h-[60vh] overflow-y-auto">
+                
+                <!-- Descritivo Breve -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-1">Resumo Executivo</h4>
+                    <p class="text-sm text-slate-300 leading-relaxed font-medium">
+                        {{ product.short_desc }}
+                    </p>
+                </div>
+
+                <!-- Texto Explicativo Completo -->
+                <div class="bg-slate-900/90 rounded-2xl p-5 border border-slate-800 space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-info"></i> Como funciona esta Solução de IA:
+                    </h4>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        {{ product.detailed_desc }}
+                    </p>
+                </div>
+
+                <!-- Soluções Executadas (Automações de A a Z) -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-gears"></i> Automações & Problemas Resolvidos no Pacote:
+                    </h4>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {% for sol in product.solutions_executed %}
+                            <li class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 flex items-start gap-2.5 text-xs text-slate-200">
+                                <i class="fa-solid fa-check-double text-emerald-400 mt-0.5 shrink-0"></i>
+                                <span>{{ sol }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Arquivos Digitais Inclusos -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-folder-open"></i> Arquivos Inclusos no Download (.ZIP / .JSON / .MD):
+                    </h4>
+                    <div class="space-y-2">
+                        {% for f in product.included_files %}
+                            <div class="bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-file-code"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-bold text-white block">{{ f.name }}</span>
+                                        <span class="text-[10px] text-slate-400">{{ f.type }} • {{ f.size }}</span>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                    Pronto p/ Download
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Requisitos de Ambiente -->
+                <div class="text-xs text-slate-400 bg-slate-950/60 p-4 rounded-xl border border-slate-800/80">
+                    <strong class="text-slate-200 block mb-1"><i class="fa-solid fa-microchip mr-1"></i> Requisitos Recomendados:</strong>
+                    {{ product.requirements }}
+                </div>
+
+            </div>
+
+            <!-- Modal Footer Price & Purchase -->
+            <div class="p-6 bg-slate-900/90 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs text-slate-400 uppercase font-bold block">Preço Promocional White-label</span>
+                    <span class="text-2xl font-black text-white">R$ {{ "%.2f"|format(product.price) }}</span>
+                </div>
+
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <button @click="modalOpen = false" class="w-1/2 sm:w-auto px-5 py-3 rounded-xl border border-slate-700 text-slate-300 font-semibold text-xs hover:bg-slate-800 transition-colors">
+                        Fechar
+                    </button>
+
+                    <button 
+                        hx-post="/cart/add/{{ product.id }}" 
+                        hx-target="#cart-drawer-container"
+                        @click="cartOpen = true; modalOpen = false"
+                        class="w-1/2 sm:w-auto bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 px-6 rounded-xl shadow-xl shadow-indigo-600/30 text-xs flex items-center justify-center gap-2 transition-all"
+                    >
+                        <i class="fa-solid fa-cart-plus"></i>
+                        <span>Adicionar ao Carrinho</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
